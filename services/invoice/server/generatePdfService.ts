@@ -43,16 +43,15 @@ export async function generatePdfService(req: NextRequest) {
 
         // Launch the browser in production or development mode depending on the environment
         if (ENV === "production") {
-            const puppeteer = await import("puppeteer-core");
-            browser = await puppeteer.launch({
-              args: chromium.args,
-              defaultViewport: chromium.defaultViewport,
-              executablePath: await chromium.executablePath(), // REMOVE your custom path here
-              headless: chromium.headless as boolean | "shell",
-              ignoreHTTPSErrors: true,
-            });
-          }
-          else if (ENV === "development") {
+			const puppeteer = await import("puppeteer-core");
+			browser = await puppeteer.launch({
+				args: [...chromium.args, "--disable-dev-shm-usage"],
+				defaultViewport: chromium.defaultViewport,
+				executablePath: await chromium.executablePath(CHROMIUM_EXECUTABLE_PATH),
+				headless: true,
+				ignoreHTTPSErrors: true,
+			});
+		} else if (ENV === "development") {
             const puppeteer = await import("puppeteer");
             browser = await puppeteer.launch({
                 args: ["--no-sandbox", "--disable-setuid-sandbox"],
