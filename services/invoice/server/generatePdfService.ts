@@ -23,9 +23,6 @@ import { InvoiceType } from "@/types";
 export async function generatePdfService(req: NextRequest) {
     const body: InvoiceType = await req.json();
 
-    chromium.setHeadlessMode = true;
-    chromium.setGraphicsMode = false;
-
     // Create a browser instance
     let browser;
 
@@ -45,12 +42,12 @@ export async function generatePdfService(req: NextRequest) {
         if (ENV === "production") {
 			const puppeteer = await import("puppeteer-core");
 			browser = await puppeteer.launch({
-                args: [...chromium.args, "--disable-dev-shm-usage"],
-                defaultViewport: chromium.defaultViewport,
-                executablePath: await chromium.executablePath(),
-                headless: chromium.headless === true,
-                ignoreHTTPSErrors: true,
-            });
+				args: [...chromium.args, "--disable-dev-shm-usage"],
+				defaultViewport: chromium.defaultViewport,
+				executablePath: await chromium.executablePath(CHROMIUM_EXECUTABLE_PATH),
+				headless: true,
+				ignoreHTTPSErrors: true,
+			});
 		} else if (ENV === "development") {
             const puppeteer = await import("puppeteer");
             browser = await puppeteer.launch({
