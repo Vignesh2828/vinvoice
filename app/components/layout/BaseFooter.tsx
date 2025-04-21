@@ -27,6 +27,7 @@ const BaseFooter = () => {
                                 Vignesh M
                             </a>
                         </p> */}
+                        
                         <p className="text-xs text-gray-400">
                             © {new Date().getFullYear()} V-INVOICE. All rights reserved.
                         </p>
